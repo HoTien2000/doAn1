@@ -1,0 +1,23 @@
+<div class="row p-0 mt-2">
+    <div class="fs-1 text-center"><i class="bi bi-file-earmark-break-fill"></i></div>
+    <h2 class="text-center text-success">TIN TỨC</h2>
+</div>
+
+<div class="alert alert-warning" role="alert" *ngIf="news && news.length === 0">
+    Không tìm thấy bài viết nào
+</div>
+
+<div class="row justify-content-center" *ngIf="news && news.length > 0">
+    <div class="col-sm-3 p-3" *ngFor="let item of news">
+        <div class="product">
+            <a routerLink="/home/view-post/{{item.id}}"><img [src]="item.image"></a>
+        </div>
+        <div class="text-center text-danger fw-bold">
+            <a routerLink="/home/view-post/{{item.id}}" class="text-decoration-none" *ngIf="item.title">{{ item.title | listPipe : 35}}</a>
+        </div>
+
+        <div class="text-center text-black fw-bold">
+            {{ item.lastUpdate | date:'dd-MM-yyyy' }}
+        </div>
+    </div>
+</div>

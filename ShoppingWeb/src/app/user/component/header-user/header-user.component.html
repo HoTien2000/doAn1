@@ -1,0 +1,284 @@
+<nav class="row navbar navbar-expand-sm navbar-dark bg-dark fw-bold">
+    <div class="container-fluid">
+        <a class="navbar-brand" routerLink="/home/main">
+            <img src="/assets/logo/logo.png" class="logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+        <div class="collapse navbar-collapse" id="mynavbar">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/home/main">TRANG CHỦ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/home/view-introduction">GIỚI THIỆU</a>
+                </li>
+
+                <li class="nav-item dropdown" *ngIf="categories && categories.length > 0">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        CỬA HÀNG
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li *ngFor="let category of categories"><a class="dropdown-item" routerLink="" (click)="onChangeLink(category.id)">{{ category.categoryName | uppercase}}</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/home/list-post">TIN TỨC</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/home/add-contact">LIÊN HỆ</a>
+                </li>
+            </ul>
+
+            <button type="button" class="btn btn-outline-danger position-relative ms-2" (click)="onCart()">
+                <i class="bi bi-cart-fill"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  <span *ngIf="cartQuantity && (cartQuantity !== '')">{{ cartQuantity }}</span>
+                  <span class="visually-hidden">unread messages</span>
+                </span>
+            </button>
+
+            <div class="btn-group ms-4">
+                <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                    <i class="bi bi-person-circle"></i> {{ email }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-lg-end">
+                    <li class="text-center d-grid gap-2 mb-2" *ngIf="!isLoggedIn">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#login">
+                            <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
+                        </button>
+                    </li>
+
+                    <li class="text-center d-grid gap-2 mb-2" *ngIf="!isLoggedIn">
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#register">
+                            <i class="bi bi-exclamation-circle-fill"></i> Đăng ký
+                        </button>
+                    </li>
+
+                    <li class="text-center d-grid gap-2 mb-2" *ngIf="showAdminBoard">
+                        <button type="button" class="btn btn-secondary" (click)="onPageAdmin()">
+                            <i class="bi bi-speedometer2"></i> Trang quản trị
+                        </button>
+                    </li>
+
+                    <li class="text-center d-grid gap-2 mb-2" *ngIf="showModeratorBoard">
+                        <button type="button" class="btn btn-primary" (click)="onMyOrder()"><i class="bi bi-wallet-fill"></i> Đơn hàng</button>
+                    </li>
+
+                    <li class="text-center d-grid gap-2 mb-2" *ngIf="isLoggedIn">
+                        <button type="button" class="btn btn-success" routerLink="/home/update-profile">
+                            <i class="bi bi-gear-fill"></i> Tài khoản
+                        </button>
+                    </li>
+
+                    <li class="text-center d-grid gap-2 mb-2" *ngIf="isLoggedIn">
+                        <button type="button" class="btn btn-info" routerLink="/home/change-password">
+                            <i class="bi bi-key-fill"></i> Mật khẩu
+                        </button>
+                    </li>
+
+                    <li class="text-center d-grid gap-2" *ngIf="isLoggedIn">
+                        <button type="button" class="btn btn-danger" (click)="onLogOut()">
+                            <i class="bi bi-box-arrow-left"></i> Đăng xuất
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<form class="row bg-dark justify-content-center p-1" (ngSubmit)="onSearch()">
+    <div class="col-auto">
+        <div class="input-group">
+            <span class="input-group-text" id="basic-addon1">Tên sản phẩm</span>
+            <input type="text" class="form-control" placeholder="Nhập tên sản phẩm" [(ngModel)]="productName" name="productName">
+        </div>
+    </div>
+
+    <div class="col-auto">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Nhập giá" [(ngModel)]="startPriceSell" name="startPriceSell">
+            <span class="input-group-text">Mức giá</span>
+            <input type="text" class="form-control" placeholder="Nhập giá" [(ngModel)]="endPriceSell" name="endPriceSell">
+        </div>
+    </div>
+
+    <div class="col-auto">
+        <div class="input-group">
+            <label class="input-group-text" for="inputGroupSelect01">Danh mục</label>
+            <select class="form-select" [(ngModel)]="categoryId" name="categoryId">
+                <option value="">Chọn danh mục</option>
+                <option *ngFor="let category of categories" [ngValue]="category.id">{{ category.categoryName }}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </div>
+</form>
+
+<div class="modal fade" id="register" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Đăng ký tài khoản</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3" (ngSubmit)="onRegister()" [formGroup]="myForm">
+                    <div class="col-sm-6">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" placeholder="Nhập email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && emailUser?.errors}">
+
+                        <div *ngIf="submitted && emailUser?.invalid" class="invalid-feedback">
+                            <div *ngIf="emailUser?.errors?.['required']">Bạn chưa nhập email</div>
+                            <div *ngIf="emailUser?.errors?.['email']">Email không đúng định dạng</div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="password" class="form-label">Mật khẩu</label>
+                        <input type="password" class="form-control" placeholder="Nhập mật khẩu" formControlName="password" [ngClass]="{ 'is-invalid': submitted && password?.errors}">
+
+                        <div *ngIf="submitted && password?.invalid" class="invalid-feedback">
+                            <div *ngIf="password?.errors?.['required']">Bạn chưa nhập mật khẩu</div>
+                            <div *ngIf="password?.errors?.['maxlength']">Mật phải khẩu nhỏ hơn 50 ký tự</div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <label for="fullName" class="form-label">Họ tên</label>
+                        <input type="text" class="form-control" placeholder="Nhập họ tên" formControlName="fullName" [ngClass]="{ 'is-invalid': submitted && fullName?.errors}">
+
+                        <div *ngIf="submitted && fullName?.invalid" class="invalid-feedback">
+                            <div *ngIf="fullName?.errors?.['required']">Bạn chưa nhập họ tên</div>
+                            <div *ngIf="fullName?.errors?.['maxlength']">Họ tên phải nhỏ hơn 50 ký tự</div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="dateOfBirth" class="form-label">Ngày sinh</label>
+                        <input type="date" class="form-control" formControlName="dateOfBirth" [ngClass]="{ 'is-invalid': submitted && dateOfBirth?.errors}">
+
+                        <div *ngIf="submitted && dateOfBirth?.invalid" class="invalid-feedback">
+                            <div *ngIf="dateOfBirth?.errors?.['required']">Bạn chưa nhập ngày sinh</div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="phone" class="form-label">Số điện thoại</label>
+                        <input type="text" class="form-control" placeholder="Nhập số điện thoại" formControlName="phone" [ngClass]="{ 'is-invalid': submitted && phone?.errors}">
+
+                        <div *ngIf="submitted && phone?.invalid" class="invalid-feedback">
+                            <div *ngIf="phone?.errors?.['required']">Bạn chưa nhập số điện thoại</div>
+                            <div *ngIf="phone?.errors?.['pattern']">Số điện thoại không đúng định dạng</div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <label for="gender" class="form-label">Giới tính</label>&nbsp;
+                        <input type="radio" formControlName="gender" [ngClass]="{ 'is-invalid': submitted && gender?.errors}" value="Nam"> Nam
+
+                        <input type="radio" formControlName="gender" [ngClass]="{ 'is-invalid': submitted && gender?.errors}" value="Nữ"> Nữ
+
+                        <div *ngIf="submitted && gender?.invalid" class="invalid-feedback">
+                            <div *ngIf="gender?.errors?.['required']">Bạn chưa chọn giới tính</div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <label for="specificAddress" class="form-label">Địa chỉ nhà</label>
+                        <input type="text" class="form-control" placeholder="Nhập số nhà - ngõ - tên đường" formControlName="specificAddress" [ngClass]="{ 'is-invalid': submitted && specificAddress?.errors}">
+
+                        <div *ngIf="submitted && specificAddress?.invalid" class="invalid-feedback">
+                            <div *ngIf="specificAddress?.errors?.['required']">Bạn chưa nhập địa chỉ nhà</div>
+                            <div *ngIf="specificAddress?.errors?.['minlength']">Địa chỉ nhà phải nhỏ hơn 255 ký tự</div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="wards" class="form-label">Xã/Phường/Thị Trấn</label>
+                        <input type="text" class="form-control" placeholder="Nhập tên Xã/Phường/Thị Trấn" formControlName="wards" [ngClass]="{ 'is-invalid': submitted && wards?.errors}">
+
+                        <div *ngIf="submitted && wards?.invalid" class="invalid-feedback">
+                            <div *ngIf="wards?.errors?.['required']">Bạn chưa nhập tên xã/phường/thị trấn</div>
+                            <div *ngIf="wards?.errors?.['minlength']">Tên xã/phường/thị trấn phải nhỏ hơn 255 ký tự</div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="district" class="form-label">Quận/Huyện</label>
+                        <input type="text" class="form-control" placeholder="Nhập tên Quận/Huyện" formControlName="district" [ngClass]="{ 'is-invalid': submitted && district?.errors}">
+
+                        <div *ngIf="submitted && district?.invalid" class="invalid-feedback">
+                            <div *ngIf="district?.errors?.['required']">Bạn chưa nhập tên quận/huyện</div>
+                            <div *ngIf="district?.errors?.['minlength']">Tên quận/huyện phải nhỏ hơn 255 ký tự</div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <label for="province" class="form-label">Tỉnh/Thành Phố</label>
+                        <input type="text" class="form-control" placeholder="Nhập tên Tỉnh/Thành Phố" formControlName="province" [ngClass]="{ 'is-invalid': submitted && province?.errors}">
+
+                        <div *ngIf="submitted && province?.invalid" class="invalid-feedback">
+                            <div *ngIf="province?.errors?.['required']">Bạn chưa nhập tên tỉnh/thành phố</div>
+                            <div *ngIf="province?.errors?.['minlength']">Tên tỉnh/thành phố phải nhỏ hơn 255 ký tự</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Đăng ký</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="login" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Đăng nhập tài khoản</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3" (ngSubmit)="onLogin()" [formGroup]="loginForm">
+                    <div class="col-sm-12">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" placeholder="Nhập email" formControlName="email" [ngClass]="{ 'is-invalid': logined && getEmail?.errors}">
+
+                        <div *ngIf="logined && getEmail?.invalid" class="invalid-feedback">
+                            <div *ngIf="getEmail?.errors?.['required']">Bạn chưa nhập email</div>
+                            <div *ngIf="getEmail?.errors?.['email']">Email không đúng định dạng</div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <label for="password" class="form-label">Mật khẩu</label>
+                        <input type="password" class="form-control" placeholder="Nhập mật khẩu" formControlName="password" [ngClass]="{ 'is-invalid': logined && getPassword?.errors}">
+
+                        <div *ngIf="logined && getPassword?.invalid" class="invalid-feedback">
+                            <div *ngIf="getPassword?.errors?.['required']">Bạn chưa nhập mật khẩu</div>
+                            <div *ngIf="getPassword?.errors?.['maxlength']">Mật phải khẩu nhỏ hơn 50 ký tự</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Đăng nhập</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="text-decoration-none" routerLink="/home/get-token" data-bs-dismiss="modal">Quên mật khẩu</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+            </div>
+        </div>
+    </div>
+</div>

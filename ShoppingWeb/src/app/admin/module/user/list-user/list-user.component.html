@@ -1,0 +1,72 @@
+<div class="col-sm-12 mt-2">
+    <h3 class="text-success">Danh sách người dùng</h3>
+
+
+    <div class="alert alert-warning" role="alert" *ngIf="userSystems && userSystems.length === 0">
+        Không có dữ liệu người dùng
+    </div>
+
+    <div class="table-responsive lb-table lb-scroll" *ngIf="userSystems && userSystems.length > 0">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Email</th>
+                    <th>Họ tên</th>
+                    <th>Ngày sinh</th>
+                    <th>Giới tính</th>
+                    <th>Số điện thoại</th>
+                    <th>Địa chỉ nhà</th>
+                    <th>Xã/Phường/Thị Trấn</th>
+                    <th>Quận/Huyện</th>
+                    <th>Tỉnh/Thành Phố</th>
+                    <th>Ngày tạo/sửa</th>
+                    <th>Quyền</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let userSystem of userSystems">
+                    <td>{{ userSystem.email }}</td>
+                    <td>{{ userSystem.fullName }}</td>
+                    <td>{{ userSystem.dateOfBirth | date:'dd-MM-yyyy'}}</td>
+                    <td>{{ userSystem.gender }}</td>
+                    <td>{{ userSystem.phone }}</td>
+                    <td>{{ userSystem.specificAddress }}</td>
+                    <td>{{ userSystem.wards }}</td>
+                    <td>{{ userSystem.district }}</td>
+                    <td>{{ userSystem.province }}</td>
+                    <td>{{ userSystem.lastUpdate | date:'dd-MM-yyyy' }}</td>
+                    <td>
+                        <div *ngFor="let role of userSystem.roles">
+                            {{ role.name }}
+                        </div>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-info" routerLink="/home-admin/update-user/{{ userSystem.id }}">Sửa</button>
+                        <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="delete(userSystem.id)" [disabled]="email === userSystem.email">Xóa</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Xóa người dùng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn muốn xóa không ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" (click)="confirmDelete()" data-bs-dismiss="modal">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

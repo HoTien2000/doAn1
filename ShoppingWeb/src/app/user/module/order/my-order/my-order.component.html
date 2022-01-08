@@ -1,0 +1,70 @@
+<div class="row justify-content-center mt-2">
+    <div class="col-sm-12">
+        <h2 class="text-center text-success">ĐƠN HÀNG</h2>
+
+        <div class="alert alert-warning" role="alert" *ngIf="payments && payments.length === 0">
+            Bạn không có đơn hàng nào
+        </div>
+        <div class="table-responsive lb-table lb-scroll" *ngIf="payments && payments.length > 0">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Tên đơn</th>
+                        <th>Số điện thoại</th>
+                        <th>Tổng số lượng</th>
+                        <th>Địa chỉ nhận</th>
+                        <th>Phí vận chuyển</th>
+                        <th>Mã giảm giá</th>
+                        <th>Giảm giá</th>
+                        <th>Ngày đặt</th>
+                        <th>Tổng thanh toán</th>
+                        <th>Trạng thái</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let payment of payments">
+                        <td>{{ payment.userSystem?.fullName }}</td>
+                        <td>{{ payment.userSystem?.phone }}</td>
+                        <td>{{ payment.totalQuantity }}</td>
+                        <td>{{ payment.shipingAddress }}</td>
+                        <td>{{ payment.shippingFee | currency: 'VND':''}}đ</td>
+                        <td>{{ payment.discountCode }}</td>
+                        <td>{{ payment.totalDiscount | currency: 'VND':''}}đ</td>
+                        <td>{{ payment.lastUpdate | date:'dd-MM-yyyy' }}</td>
+                        <td>{{ payment.total | currency: 'VND':''}}đ</td>
+                        <td *ngIf="payment.status === 0" class="text-danger">Chờ xác nhận</td>
+                        <td *ngIf="payment.status === 1" class="text-primary">Xác nhận thành công</td>
+                        <td *ngIf="payment.status === 2" class="text-warning">Đang vận chuyển</td>
+                        <td *ngIf="payment.status === 3 || payment.status === 4" class="text-success">Giao hàng thành công</td>
+                        <td>
+                            <button type="button" class="btn btn-secondary ms-2" routerLink="/home/order-detail/{{ payment.id }}">Chi tiết</button>
+                            <button type="button" class="btn btn-success ms-2" (click)="onSuccess(payment.id, 4)" [disabled]="payment.status === 0 || payment.status === 1 || payment.status === 2 || payment.status === 4 ">Đã nhận hàng</button>
+                            <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="delete(payment.id)" [disabled]="payment.status === 2 || payment.status === 3 || payment.status === 4">Hủy</button>
+                            <button type="button" class="btn btn-warning ms-2" routerLink="/home/order-detail/{{ payment.id }}" [disabled]="payment.status === 0 || payment.status === 1 || payment.status === 2 || payment.status === 3">Đánh giá</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Xóa</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Bạn có chắc chắn muốn hủy đơn hàng này không ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-primary" (click)="confirmDelete()" data-bs-dismiss="modal">Hủy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

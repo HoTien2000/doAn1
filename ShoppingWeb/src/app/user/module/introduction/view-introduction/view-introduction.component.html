@@ -1,0 +1,5 @@
+<div class="row mt-2" *ngIf="introductions && introductions.length > 0">
+    <div class="text-wrap" *ngFor="let introduction of introductions">
+        <span style="white-space: pre-wrap">{{ introduction.content }}</span>
+    </div>
+</div>

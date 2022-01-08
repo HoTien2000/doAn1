@@ -1,0 +1,50 @@
+<div class="alert alert-warning mt-2" role="alert" *ngIf="productNotSales && productNotSales.length === 0 && productSales && productSales.length === 0">
+    Không tìm thấy sản phẩm nào
+</div>
+
+<div class="row p-0 mt-2" *ngIf="productNotSales && productNotSales.length > 0">
+    <div class="fs-1 text-center"><i class="bi bi-bag-fill"></i></div>
+    <h2 class="text-center text-success">SẢM PHẨM</h2>
+</div>
+
+<div class="row justify-content-center" *ngIf="productNotSales && productNotSales.length > 0">
+    <div class="col-sm-3 p-3" *ngFor="let product of productNotSales">
+        <div class="product">
+            <a routerLink="/home/product-order/{{product.id}}"><img [src]="product.image"></a>
+        </div>
+        <div class="text-center text-danger fw-bold">
+            {{ product.category?.categoryName}}
+        </div>
+        <div class="text-center">
+            <a routerLink="/home/product-order/{{product.id}}" class="link-info text-decoration-none" *ngIf="product.productName">{{ product.productName | searchPipe : 35}}</a>
+        </div>
+        <div class="text-center text-black fw-bold">
+            {{ product.priceSell | currency: 'VND':''}}đ
+        </div>
+    </div>
+</div>
+
+<div class="row p-0 mt-2" *ngIf="productSales && productSales.length > 0">
+    <div class="fs-1 text-center"><i class="bi bi-bag-fill"></i></div>
+    <h2 class="text-center text-success">SẢM PHẨM KHUYẾN MẠI</h2>
+</div>
+
+<div class="row justify-content-center" *ngIf="productSales && productSales.length > 0">
+    <div class="col-sm-3 p-3" *ngFor="let product of productSales">
+        <div class="box">
+            <div class="ribbon ribbon-top-right">
+                <span class="text-danger fw-bold">GIẢM {{ product.sale }}%</span>
+            </div>
+            <a routerLink="/home/product-order/{{product.id}}"><img [src]="product.image"></a>
+        </div>
+        <div class="text-center text-danger fw-bold">
+            {{ product.category?.categoryName}}
+        </div>
+        <div class="text-center">
+            <a routerLink="/home/product-order/{{product.id}}" class="link-info text-decoration-none" *ngIf="product.productName">{{ product.productName | searchPipe : 35}}</a>
+        </div>
+        <div class="text-center">
+            <span class="text-decoration-line-through text-secondary">{{ product.priceSell | currency: 'VND':''}}đ</span> &nbsp; <span class="fw-bold text-black" *ngIf="product.priceSell && product.sale">{{ product.priceSell - (product.priceSell * (product.sale / 100)) | currency: 'VND':''}}đ</span>
+        </div>
+    </div>
+</div>

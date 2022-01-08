@@ -1,0 +1,73 @@
+<div class="row justify-content-center mt-2">
+    <div class="col-sm-12">
+        <h2 class="text-center text-success">Thông tin token quên mật khẩu</h2>
+
+        <div class="alert alert-warning" role="alert" *ngIf="passwordResetTokens && passwordResetTokens.length === 0">
+            Không có dữ liệu
+        </div>
+
+        <div *ngIf="passwordResetTokens && passwordResetTokens.length > 0">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteAll">Xóa tất cả</button>
+        </div>
+
+        <div class="table-responsive lb-table lb-scroll" *ngIf="passwordResetTokens && passwordResetTokens.length > 0">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Token</th>
+                        <th>Hết hạn</th>
+                        <th>Tài khoản</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let passwordResetToken of passwordResetTokens">
+                        <td>{{ passwordResetToken.token }}</td>
+                        <td>{{ passwordResetToken.expirationDate | date:'dd-MM-yyyy hh:mm:ss' }}</td>
+                        <td>{{ passwordResetToken.userSystem?.email }}</td>
+                        <td>
+                            <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="delete(passwordResetToken.id)">Xóa</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Xóa</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Bạn có chắc chắn muốn xóa không ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-primary" (click)="confirmDelete()" data-bs-dismiss="modal">Xóa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="deleteAll" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Xóa</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Bạn có chắc chắn muốn xóa tất cả dữ liệu không ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-primary" (click)="deleteAll()" data-bs-dismiss="modal">Xóa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

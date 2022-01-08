@@ -1,0 +1,40 @@
+<div class="row justify-content-center mt-2">
+    <div class="col-8">
+        <h3 class="text-center text-success">TẠO PHÍ VẬN CHUYỂN</h3>
+
+        <form (ngSubmit)="onSubmit()" [formGroup]="myForm">
+            <div class="mb-3" [hidden]="true">
+                <label for="id" class="form-label">Địa chỉ</label>
+                <input type="text" class="form-control" placeholder="Nhập id" formControlName="id" [ngClass]="{ 'is-invalid': submitted && id?.errors}" readonly>
+
+                <div *ngIf="submitted && id?.invalid" class="invalid-feedback">
+                    <div *ngIf="id?.errors?.['required']">Bạn chưa nhập id</div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="address" class="form-label">Địa chỉ</label>
+                <input type="text" class="form-control" placeholder="Nhập địa chỉ" formControlName="address" [ngClass]="{ 'is-invalid': submitted && address?.errors}">
+
+                <div *ngIf="submitted && address?.invalid" class="invalid-feedback">
+                    <div *ngIf="address?.errors?.['required']">Bạn chưa nhập địa chỉ</div>
+                    <div *ngIf="address?.errors?.['maxlength']">Địa chỉ phải nhỏ hơn 50 ký tự</div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="shippingFee" class="form-label">Phí vận chuyển</label>
+                <input type="number" class="form-control" placeholder="Nhập phí vận chuyển" formControlName="shippingFee" [ngClass]="{ 'is-invalid': submitted && getShippingFee?.errors}">
+
+                <div *ngIf="submitted && getShippingFee?.invalid" class="invalid-feedback">
+                    <div *ngIf="getShippingFee?.errors?.['required']">Bạn chưa nhập phí vận chuyển</div>
+                    <div *ngIf="getShippingFee?.errors?.['max']">Phí vận chuyển phải nhỏ hơn 1000000000</div>
+                    <div *ngIf="getShippingFee?.errors?.['min']">Phí vận chuyển phải từ 0 tở lên</div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Lưu</button>
+            <button type="button" class="btn btn-secondary ms-2" (click)="onBack()">Quay lại</button>
+        </form>
+    </div>
+</div>

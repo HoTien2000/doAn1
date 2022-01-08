@@ -1,0 +1,244 @@
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+.logo {
+    width: 150px;
+    height: 45px;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+}
+
+.sidebar {
+    height: 37em;
+    overflow-y: scroll;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 8px;
+    height: 7px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: grey;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+.lb-table {
+    max-height: 30em;
+}
+
+.lb-table tr {
+    line-height: 1.5em;
+}
+
+.lb-table tr th,
+td {
+    white-space: nowrap;
+    padding: 0.3em 1em;
+}
+
+.lb-scroll {
+    overflow: auto;
+}
+
+.lb-scroll::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.lb-scroll::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: rgb(163, 161, 161);
+}
+
+.lb-scroll::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+.lb-scroll::-webkit-scrollbar-thumb {
+    background-color: #666464;
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    -ms-border-radius: 30px;
+    -o-border-radius: 30px;
+}
+
+.slider img {
+    height: 600px;
+}
+
+.footer-img {
+    width: 100%;
+    height: 10em;
+}
+
+.footer-img img {
+    width: 100%;
+    height: 100%;
+}
+
+.product-order img {
+    width: 100%;
+    height: 25em;
+}
+
+.news-img {
+    width: 50px;
+    height: 50px;
+}
+
+.img-new-detail {
+    width: 40%;
+    height: 400px;
+}
+
+.image-input {
+    width: 50%;
+    height: 300px;
+}
+
+.image-proudct {
+    width: 30%;
+    height: 150px;
+}
+
+.image-detail {
+    height: 550px;
+}
+
+.box {
+    position: relative;
+    max-width: 600px;
+    width: 240px;
+    height: 240px;
+    background: #000;
+    box-shadow: 0 0 15px rgba(0, 0, 0, .1);
+    margin-right: 20px;
+}
+
+.product {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+
+.product img:hover {
+    transform: scale(1.1);
+}
+
+.product img {
+    width: 100%;
+    height: 100%;
+}
+
+.box {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 0 15px rgba(0, 0, 0, .1);
+    margin-right: 20px;
+}
+
+.box img:hover {
+    transform: scale(1.1);
+}
+
+.box img {
+    width: 100%;
+    height: 100%;
+}
+
+.ribbon {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    position: absolute;
+}
+
+.ribbon::before,
+.ribbon::after {
+    position: absolute;
+    z-index: -1;
+    content: '';
+    display: block;
+    border: 3px solid #1eb5ff;
+}
+
+.ribbon span {
+    position: absolute;
+    display: block;
+    width: 165px;
+    padding: 5px;
+    text-align: center;
+    background-color: #1eb5ff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .1);
+}
+
+
+/* top right*/
+
+.ribbon-top-right {
+    top: -3px;
+    right: -3px;
+}
+
+.ribbon-top-right::before,
+.ribbon-top-right::after {
+    border-top-color: transparent;
+    border-right-color: transparent;
+}
+
+.ribbon-top-right::before {
+    top: 0;
+    left: 0;
+}
+
+.ribbon-top-right::after {
+    bottom: 0;
+    right: 0;
+}
+
+.ribbon-top-right span {
+    left: -22px;
+    top: 30px;
+    transform: rotate(45deg);
+}
+
+.content-form {
+    height: 36em;
+    overflow-y: scroll;
+}
+
+.content-form::-webkit-scrollbar {
+    width: 10px;
+    height: 7px;
+}
+
+.content-form::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+.content-form::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: grey;
+}
+
+.content-main {
+    height: 10em;
+}

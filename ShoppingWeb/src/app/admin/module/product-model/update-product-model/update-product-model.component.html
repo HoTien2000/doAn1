@@ -1,0 +1,24 @@
+<div class="row justify-content-center mt-2">
+    <div class="col-8">
+        <h3 class="text-center text-success">CẬP NHẬT SIZE</h3>
+
+        <form (ngSubmit)="onSubmit()" [formGroup]="myForm">
+            <div class="mb-3" [hidden]="true">
+                <input type="text" class="form-control" formControlName="id" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="productModelName" class="form-label">Tên size</label>
+                <input type="text" class="form-control" placeholder="Nhập tên size" formControlName="productModelName" [ngClass]="{ 'is-invalid': submitted && productModelName?.errors}">
+
+                <div *ngIf="submitted && productModelName?.invalid" class="invalid-feedback">
+                    <div *ngIf="productModelName?.errors?.['required']">Bạn chưa nhập tên size</div>
+                    <div *ngIf="productModelName?.errors?.['maxlength']">Tên size phải nhỏ hơn 50 ký tự</div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Lưu</button>
+            <button type="button" class="btn btn-secondary ms-2" (click)="onBack()">Quay lại</button>
+        </form>
+    </div>
+</div>

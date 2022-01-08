@@ -1,0 +1,54 @@
+<div class="row justify-content-center mt-2">
+    <div class="col-sm-12">
+        <h2 class="text-center text-success">Danh sách phí vận chuyển</h2>
+
+        <div class="alert alert-warning" role="alert" *ngIf="shippingFees && shippingFees.length === 0">
+            Không có dữ liệu phí vận chuyển
+        </div>
+
+        <div class="table-responsive lb-table lb-scroll" *ngIf="shippingFees && shippingFees.length > 0">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Địa chỉ</th>
+                        <th>Phí vận chuyển</th>
+                        <th>Ngày tạo</th>
+                        <th>Người tạo</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let shippingFee of shippingFees">
+                        <td>{{ shippingFee.address }}</td>
+                        <td>{{ shippingFee.shippingFee | currency: 'VND':''}}đ</td>
+                        <td>{{ shippingFee.lastUpdate | date:'dd-MM-yyyy' }}</td>
+                        <td>{{ shippingFee.userSystem?.fullName }}</td>
+                        <td>
+                            <button type="button" class="btn btn-info" routerLink="/home-admin/update-shipping-fee/{{ shippingFee.id }}">Sửa</button>
+                            <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="delete(shippingFee.id)">Xóa</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Xóa</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Bạn có chắc chắn muốn xóa không ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-primary" (click)="confirmDelete()" data-bs-dismiss="modal">Xóa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

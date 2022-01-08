@@ -1,0 +1,57 @@
+<div class="row justify-content-center mt-2">
+    <div class="col-sm-12">
+        <h2 class="text-center text-success">Danh sách mã giảm giá</h2>
+
+        <div class="alert alert-warning" role="alert" *ngIf="discountCodes && discountCodes.length === 0">
+            Không có dữ liệu mã giảm giá
+        </div>
+
+        <div class="table-responsive lb-table lb-scroll" *ngIf="discountCodes && discountCodes.length > 0">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Mã giảm giá</th>
+                        <th>Mức giảm giá</th>
+                        <th>Ngày tạo</th>
+                        <th>Trạng thái</th>
+                        <th>Người tạo</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let discountCode of discountCodes">
+                        <td>{{ discountCode.discountCode }}</td>
+                        <td>{{ discountCode.discount | currency: 'VND':''}}đ</td>
+                        <td>{{ discountCode.lastUpdate | date:'dd-MM-yyyy' }}</td>
+                        <td *ngIf="discountCode.status === 0" class="text-success">Chưa dùng</td>
+                        <td *ngIf="discountCode.status === 1" class="text-danger">Đã dùng</td>
+                        <td>{{ discountCode.userSystem?.fullName }}</td>
+                        <td>
+                            <button type="button" class="btn btn-info" routerLink="/home-admin/update-discount-code/{{ discountCode.id }}" [disabled]="discountCode.status === 1">Sửa</button>
+                            <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="delete(discountCode.id)">Xóa</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Xóa</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Bạn có chắc chắn muốn xóa không ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-primary" (click)="confirmDelete()" data-bs-dismiss="modal">Xóa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

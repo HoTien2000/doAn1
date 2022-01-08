@@ -1,0 +1,41 @@
+<h1 class="text-center text-primary mt-2">
+    CHÀO MỪNG BẠN ĐẾN VỚI M30 SHOP
+</h1>
+
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: white"></p>
+</ngx-spinner>
+
+<div class="row justify-content-center mt-5 text-center fw-bold content-main">
+    <div class="col-sm-3 bg-primary p-3">
+        <div>CHỜ XÁC NHẬN</div>
+        <div>{{ status0 }}</div>
+    </div>
+
+    <div class="col-sm-3 bg-warning p-3">
+        <div>ĐÓNG HÀNG</div>
+        <div>{{ status1 }}</div>
+    </div>
+
+    <div class="col-sm-3 bg-info p-3">
+        <div>ĐANG VẬN CHUYỂN</div>
+        <div>{{ status2 }}</div>
+    </div>
+</div>
+
+<div class="row justify-content-center mt-5 text-center fw-bold content-main">
+    <div class="col-sm-3 bg-secondary p-3">
+        <div>NGƯỜI DÙNG</div>
+        <div>{{ user }}</div>
+    </div>
+
+    <div class="col-sm-3 bg-danger p-3">
+        <div>ĐANG KHUYẾN MẠI</div>
+        <div>{{ sale }}</div>
+    </div>
+
+    <div class="col-sm-3 bg-success p-3">
+        <div>DANH MỤC</div>
+        <div>{{ category }}</div>
+    </div>
+</div>

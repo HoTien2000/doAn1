@@ -1,0 +1,56 @@
+<div class="row justify-content-center mt-2">
+    <div class="col-sm-12">
+        <h2 class="text-center text-success">Danh sách liên hệ</h2>
+
+        <div class="alert alert-warning" role="alert" *ngIf="contacts && contacts.length === 0">
+            Không có dữ liệu danh sách liên hệ
+        </div>
+
+        <div class="table-responsive lb-table lb-scroll" *ngIf="contacts && contacts.length > 0">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Họ tên</th>
+                        <th>Email</th>
+                        <th>Điện thoại</th>
+                        <th>Ngày gửi</th>
+                        <th>Nội dung</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let contact of contacts">
+                        <td>{{ contact.fullName }}</td>
+                        <td>{{ contact.email }}</td>
+                        <td>{{ contact.phone }}</td>
+                        <td>{{ contact.dateCreate | date:'dd-MM-yyyy' }}</td>
+                        <td style="white-space: pre-wrap">{{ contact.content }}</td>
+                        <td>
+                            <button type="button" class="btn btn-info" routerLink="/home-admin/view-contact/{{ contact.id }}">Xem</button>
+                            <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="delete(contact.id)">Xóa</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Xóa</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Bạn có chắc chắn muốn xóa không ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-primary" (click)="confirmDelete()" data-bs-dismiss="modal">Xóa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

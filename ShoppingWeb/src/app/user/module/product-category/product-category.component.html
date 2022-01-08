@@ -1,0 +1,106 @@
+<div class="row slider">
+    <div id="carouselExampleCaptions" class="carousel slide p-0" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/assets/slide/s1.png" class="d-block w-100">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Tự tin trong từng khoảnh khắc</h5>
+                    <p>Thời trang hợp với mọi lứa tuổi theo từng thời gian</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="/assets/slide/s2.png" class="d-block w-100">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Siêu khuyến mại</h5>
+                    <p>Siêu khuyến mại, giá yêu thương</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="/assets/slide/slideshow_2.jpg" class="d-block w-100">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Thời trang mang sức sống mới</h5>
+                    <p>Thời trang thể thao luôn đồng hành cùng bạn</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+<div class="row bg-info fw-bold text-white text-center">
+    <div class="col-sm-3 p-3">
+        <h4>MIỄN PHÍ VẬN CHUYỂN</h4>
+        <div class="fs-1"><i class="bi bi-truck"></i></div>
+    </div>
+    <div class="col-sm-3 p-3">
+        <h4>GIẢM GIÁ TỚI 15%</h4>
+        <div class="fs-1"><i class="bi bi-piggy-bank-fill"></i></div>
+    </div>
+    <div class="col-sm-3 p-3">
+        <h4>THANH TOÁN AN TOÀN</h4>
+        <div class="fs-1"><i class="bi bi-credit-card-2-front-fill"></i></div>
+    </div>
+    <div class="col-sm-3 p-3">
+        <h4>NHẬN QUÀ HẤP DẪN</h4>
+        <div class="fs-1"><i class="bi bi-gift-fill"></i></div>
+    </div>
+</div>
+
+<div class="row p-0 mt-2" *ngIf="category">
+    <div class="fs-1 text-center"><i class="bi bi-bag-fill"></i></div>
+    <h2 class="text-center text-success">{{ category.categoryName | uppercase}}</h2>
+</div>
+
+<div class="alert alert-warning" role="alert" *ngIf="products && productSales && products.length === 0 && productSales.length === 0">
+    Không tìm thấy sản phẩm nào
+</div>
+
+<div class="row justify-content-center" *ngIf="products && products.length > 0">
+    <div class="col-sm-3 p-3" *ngFor="let product of products">
+        <div class="product">
+            <a routerLink="/home/product-order/{{product.id}}"><img [src]="product.image"></a>
+        </div>
+        <div class="text-center text-danger fw-bold">
+            {{ product.category?.categoryName}}
+        </div>
+        <div class="text-center">
+            <a routerLink="/home/product-order/{{product.id}}" class="link-info text-decoration-none" *ngIf="product.productName">{{ product.productName | productCategoryPipe : 35}}</a>
+        </div>
+        <div class="text-center text-black fw-bold">
+            {{ product.priceSell | currency: 'VND':''}}đ
+        </div>
+    </div>
+</div>
+
+<h3 class="text-primary" *ngIf="productSales && productSales.length > 0"><i class="bi bi-arrow-right-circle-fill"></i> SẢN PHẨM KHUYẾN MẠI</h3>
+
+<div class="row justify-content-center" *ngIf="productSales && productSales.length > 0">
+    <div class="col-sm-3 p-3" *ngFor="let product of productSales">
+        <div class="box">
+            <div class="ribbon ribbon-top-right">
+                <span class="text-danger fw-bold">GIẢM {{ product.sale }}%</span>
+            </div>
+            <a routerLink="/home/product-order/{{product.id}}"><img [src]="product.image"></a>
+        </div>
+        <div class="text-center text-danger fw-bold">
+            {{ product.category?.categoryName}}
+        </div>
+        <div class="text-center">
+            <a routerLink="/home/product-order/{{product.id}}" class="link-info text-decoration-none" *ngIf="product.productName">{{ product.productName | productCategoryPipe : 35}}</a>
+        </div>
+        <div class="text-center">
+            <span class="text-decoration-line-through text-secondary">{{ product.priceSell | currency: 'VND':''}}đ</span> &nbsp; <span class="fw-bold text-black" *ngIf="product.priceSell && product.sale">{{ product.priceSell - (product.priceSell * (product.sale / 100)) | currency: 'VND':''}}đ</span>
+        </div>
+    </div>
+</div>

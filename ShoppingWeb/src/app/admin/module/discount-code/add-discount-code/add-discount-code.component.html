@@ -1,0 +1,32 @@
+<div class="row justify-content-center mt-2">
+    <div class="col-8">
+        <h3 class="text-center text-success">TẠO MÃ GIẢM GIÁ</h3>
+
+        <form (ngSubmit)="onSubmit()" [formGroup]="myForm">
+            <div class="mb-3">
+                <label for="quantity" class="form-label">Số lượng mã</label>
+                <input type="number" class="form-control" placeholder="Nhập số lượng mã" formControlName="quantity" [ngClass]="{ 'is-invalid': submitted && quantity?.errors}">
+
+                <div *ngIf="submitted && quantity?.invalid" class="invalid-feedback">
+                    <div *ngIf="quantity?.errors?.['required']">Bạn chưa nhập số lượng mã giảm giá</div>
+                    <div *ngIf="quantity?.errors?.['max']">Số lượng phải từ 1 đến 100</div>
+                    <div *ngIf="quantity?.errors?.['min']">Số lượng phải từ 1 đến 100</div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="discount" class="form-label">Số tiền giảm</label>
+                <input type="number" class="form-control" placeholder="Nhập mức giảm giá" formControlName="discount" [ngClass]="{ 'is-invalid': submitted && discount?.errors}">
+
+                <div *ngIf="submitted && discount?.invalid" class="invalid-feedback">
+                    <div *ngIf="discount?.errors?.['required']">Bạn chưa nhập mức giảm giá</div>
+                    <div *ngIf="discount?.errors?.['max']">Mức giảm giá phải nhỏ hơn 1000000000</div>
+                    <div *ngIf="discount?.errors?.['min']">Mức giảm giá phải từ 1đ tở lên</div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Tạo</button>
+            <button type="button" class="btn btn-secondary ms-2" (click)="onBack()">Quay lại</button>
+        </form>
+    </div>
+</div>

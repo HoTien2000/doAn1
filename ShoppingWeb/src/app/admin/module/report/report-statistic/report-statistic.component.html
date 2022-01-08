@@ -1,0 +1,87 @@
+<div class="row justify-content-center mt-2">
+    <div class="col-sm-12" *ngIf="statisticDTO">
+        <h2 class="text-center text-success">THỐNG KÊ DOANH THU</h2>
+
+        <form class="row gy-2 gx-3 align-items-center justify-content-end" (ngSubmit)="repostStatistic()">
+            <div class="col-auto">
+                <div class="input-group">
+                    <div class="input-group-text">Ngày bắt đầu</div>
+                    <input type="date" class="form-control" [(ngModel)]="startDate" name="startDate">
+                </div>
+            </div>
+
+            <div class="col-auto">
+                <div class="input-group">
+                    <div class="input-group-text">Ngày kết thúc</div>
+                    <input type="date" class="form-control" [(ngModel)]="endDate" name="endDate">
+                </div>
+            </div>
+
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            </div>
+        </form>
+
+        <div class="mt-2 d-flex text-center text-white fw-bold">
+            <div class="col-sm-4 bg-warning p-3">
+                Nhập: {{ statisticDTO.totalImport | currency: 'VND':''}}đ
+            </div>
+
+            <div class="col-sm-4 bg-primary p-3">
+                Thực thu: {{ statisticDTO.totalSell | currency: 'VND':''}}đ
+            </div>
+
+            <div class="col-sm-4 bg-success p-3">
+                Thu: {{ statisticDTO.total | currency: 'VND':''}}đ
+            </div>
+        </div>
+
+        <div class="alert alert-warning mt-2" role="alert" *ngIf="statisticDTO.paymentDTOs && statisticDTO.paymentDTOs.length === 0">
+            Không có đơn hàng nào
+        </div>
+
+        <div class="table-responsive lb-table lb-scroll" *ngIf="statisticDTO.paymentDTOs && statisticDTO.paymentDTOs.length > 0">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Tên đơn</th>
+                        <th>Email</th>
+                        <th>Số điện thoại</th>
+                        <th>Tổng số lượng</th>
+                        <th>Địa chỉ nhận</th>
+                        <th>Phí vận chuyển</th>
+                        <th>Mã giảm giá</th>
+                        <th>Giảm giá</th>
+                        <th>Ngày đặt</th>
+                        <th>Tổng thanh toán</th>
+                        <th>Thực thu</th>
+                        <th>Trạng thái</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let payment of statisticDTO.paymentDTOs">
+                        <td>{{ payment.userSystem?.fullName }}</td>
+                        <td>{{ payment.userSystem?.email }}</td>
+                        <td>{{ payment.userSystem?.phone }}</td>
+                        <td>{{ payment.totalQuantity }}</td>
+                        <td>{{ payment.shipingAddress }}</td>
+                        <td class="fw-bold">{{ payment.shippingFee | currency: 'VND':''}}đ</td>
+                        <td>{{ payment.discountCode }}</td>
+                        <td class="fw-bold">{{ payment.totalDiscount | currency: 'VND':''}}đ</td>
+                        <td>{{ payment.lastUpdate | date:'dd-MM-yyyy' }}</td>
+                        <td class="fw-bold">{{ payment.total | currency: 'VND':''}}đ</td>
+                        <td class="text-danger fw-bold">{{ payment.actualMoney | currency: 'VND':''}}đ</td>
+                        <td *ngIf="payment.status === 0" class="text-danger">Chờ xác nhận</td>
+                        <td *ngIf="payment.status === 1" class="text-primary">Xác nhận thành công</td>
+                        <td *ngIf="payment.status === 2" class="text-warning">Đang vận chuyển</td>
+                        <td *ngIf="payment.status === 3 || payment.status === 4" class="text-success">Giao hàng thành công</td>
+                        <td>
+                            <button type="button" class="btn btn-secondary" routerLink="/home-admin/view-order/{{ payment.id }}">Chi tiết</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

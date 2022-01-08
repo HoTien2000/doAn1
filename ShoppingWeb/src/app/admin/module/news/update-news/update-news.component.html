@@ -1,0 +1,64 @@
+<div class="row justify-content-center mt-2 mb-2 content-form">
+    <div class="col-8" *ngIf="news">
+        <h3 class="text-center text-success">CẬP NHẬT TIN TỨC</h3>
+
+        <form (ngSubmit)="onSubmit()" [formGroup]="myForm">
+            <div class="mb-3" [hidden]="true">
+                <input type="text" class="form-control" formControlName="id" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="title" class="form-label">Tiêu đề</label>
+                <input type="text" class="form-control" placeholder="Nhập tiêu đề tin tức" formControlName="title" [ngClass]="{ 'is-invalid': submitted && title?.errors}">
+
+                <div *ngIf="submitted && title?.invalid" class="invalid-feedback">
+                    <div *ngIf="title?.errors?.['required']">Bạn chưa nhập tiêu đề tin tức</div>
+                    <div *ngIf="title?.errors?.['maxlength']">Tiêu đề tin tức phải nhỏ hơn 255 ký tự</div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="content" class="form-label">Nội dung</label>
+                <textarea class="form-control" placeholder="Nhập nội dung tin tức" formControlName="content" [ngClass]="{ 'is-invalid': submitted && content?.errors}"></textarea>
+
+                <div *ngIf="submitted && content?.invalid" class="invalid-feedback">
+                    <div *ngIf="content?.errors?.['required']">Bạn chưa nhập nội dung tin tức</div>
+                    <div *ngIf="content?.errors?.['maxlength']">Nội dung tin tức phải nhỏ hơn 4000 ký tự</div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="image" class="form-label">Ảnh</label>
+                <input type="file" class="form-control" accept="image/*" (change)="selectFile($event)">
+            </div>
+
+            <div class="mb-3" *ngIf="imgURL">
+                <img [src]="imgURL" class="image-input">
+            </div>
+
+            <div class="mb-3">
+                <label for="rootLink" class="form-label">Nguồn tin tức</label>
+                <input type="text" class="form-control" placeholder="Nhập link nguồn bài viết hoặc ghi tên tác giả" formControlName="rootLink" [ngClass]="{ 'is-invalid': submitted && rootLink?.errors}">
+
+                <div *ngIf="submitted && rootLink?.invalid" class="invalid-feedback">
+                    <div *ngIf="rootLink?.errors?.['required']">Bạn chưa nhập nguồn tin tức</div>
+                    <div *ngIf="rootLink?.errors?.['maxlength']">Nguồn tin tức phải nhỏ hơn 255 ký tự</div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="categoryNewsId" class="form-label">Danh mục tin tức</label>
+                <select class="form-select form-control" formControlName="categoryNewsId" [ngClass]="{ 'is-invalid': submitted && categoryNewsId?.errors}">
+                    <option *ngFor="let categoryNew of categoryNews" [ngValue]="categoryNew.id">{{ categoryNew.categoryName }}</option>
+                </select>
+
+                <div *ngIf="submitted && categoryNewsId?.invalid" class="invalid-feedback">
+                    <div *ngIf="categoryNewsId?.errors?.['required']">Bạn chưa chọn danh mục tin tức</div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Lưu</button>
+            <button type="button" class="btn btn-secondary ms-2" (click)="onBack()">Quay lại</button>
+        </form>
+    </div>
+</div>

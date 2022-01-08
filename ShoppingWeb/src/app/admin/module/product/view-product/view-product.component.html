@@ -1,0 +1,88 @@
+<div class="row justify-content-center mt-2 mb-2 content-form">
+    <div class="col-12" *ngIf="productDetailDTO">
+        <h3 class="text-center text-success">CHI TIẾT SẢN PHẨM</h3>
+        <div id="carouselExampleControlsNoTouching" class="carousel slide" data-bs-touch="false" data-bs-interval="false">
+            <div class="carousel-inner">
+                <div [ngClass]="i===0 ? 'carousel-item active' : 'carousel-item'" *ngFor="let url of productImages; let i = index">
+                    <img [src]="url.image" class="d-block w-100 image-detail">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        <table class="table table-bordered border-primary">
+            <tr>
+                <th>Tên sản phẩm</th>
+                <td>{{ productDetailDTO.productName }}</td>
+            </tr>
+            <tr>
+                <th>Giới thiệu</th>
+                <td style="white-space: pre-wrap">{{ productDetailDTO.introduce }}</td>
+            </tr>
+            <tr>
+                <th>Mô tả</th>
+                <td style="white-space: pre-wrap">{{ productDetailDTO.description }}</td>
+            </tr>
+            <tr>
+                <th>Giá nhập</th>
+                <td>{{ productDetailDTO.priceImport | currency: 'VND':'' }}đ</td>
+            </tr>
+            <tr>
+                <th>Giá bán</th>
+                <td>{{ productDetailDTO.priceSell | currency: 'VND':'' }}đ</td>
+            </tr>
+            <tr>
+                <th>Số lượng nhập</th>
+                <td>{{ productDetailDTO.quantityImport }}</td>
+            </tr>
+            <tr>
+                <th>Số lượng đã bán</th>
+                <td>{{ productDetailDTO.quantitySell }}</td>
+            </tr>
+            <tr>
+                <th>Số lượng hiện tại</th>
+                <td>{{ productDetailDTO.inventory }}</td>
+            </tr>
+            <tr>
+                <th>Khuyến mại</th>
+                <td>{{ productDetailDTO.sale }}</td>
+            </tr>
+            <tr>
+                <th>Ngày cập nhật</th>
+                <td>{{ productDetailDTO.lastUpdate | date:'dd-MM-yyyy' }}</td>
+            </tr>
+            <tr>
+                <th>Size</th>
+                <td>
+                    <div *ngFor="let productModel of productDetailDTO.productModels">
+                        {{ productModel.productModelName }}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>Màu</th>
+                <td>
+                    <div *ngFor="let productType of productDetailDTO.productTypes">
+                        {{ productType.productTypeName }}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>Danh mục</th>
+                <td>{{ productDetailDTO.category?.categoryName }}</td>
+            </tr>
+            <tr>
+                <th>Người tạo</th>
+                <td>{{ productDetailDTO.userSystem?.fullName }}</td>
+            </tr>
+        </table>
+        <button type="button" class="btn btn-secondary mb-3" (click)="onBack()">Quay lại</button>
+    </div>
+</div>

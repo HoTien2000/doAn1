@@ -1,0 +1,21 @@
+<div class="row justify-content-center mt-2 mb-2 content-form">
+    <div class="col-sm-8">
+        <h3 class="text-center text-success">Gửi email</h3>
+
+        <form class="row g-3" (ngSubmit)="onSubmit()" [formGroup]="myForm">
+            <div class="col-sm-12">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" placeholder="Nhập email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && emailUser?.errors}">
+
+                <div *ngIf="submitted && emailUser?.invalid" class="invalid-feedback">
+                    <div *ngIf="emailUser?.errors?.['required']">Bạn chưa nhập email</div>
+                    <div *ngIf="emailUser?.errors?.['email']">Email không đúng định dạng</div>
+                </div>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Gửi email</button>
+                <button type="button" class="btn btn-secondary ms-2" (click)="onBack()">Quay lại</button>
+            </div>
+        </form>
+    </div>
+</div>

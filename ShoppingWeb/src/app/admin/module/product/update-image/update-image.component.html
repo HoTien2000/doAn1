@@ -1,0 +1,40 @@
+<div class="row justify-content-center mt-2 mb-2 content-form">
+    <div class="col-12" *ngIf="productDetailDTO">
+        <h3 class="text-center text-success">CẬP NHẬT ẢNH CHO SẢN PHẨM</h3>
+        <div id="carouselExampleControlsNoTouching" class="carousel slide" data-bs-touch="false" data-bs-interval="false">
+            <div class="carousel-inner">
+                <div [ngClass]="i===0 ? 'carousel-item active' : 'carousel-item'" *ngFor="let url of productImages; let i = index">
+                    <img [src]="url.image" class="d-block w-100 image-detail">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <form class="col-sm-5 mb-2" (ngSubmit)="onSubmit()" [formGroup]="myForm">
+        <div class="mb-3" [hidden]="true">
+            <input type="text" class="form-control" formControlName="id">
+        </div>
+
+        <div class="mb-3">
+            <label for="image" class="form-label">Chọn ảnh</label>
+            <input type="file" class="form-control" accept="image/*" (change)="selectFile($event)" multiple="true">
+        </div>
+
+        <div class="mb-3 text-center" *ngIf="imgURLs && imgURLs.length > 0">
+            <div *ngFor="let url of imgURLs; let i = index">
+                <img [src]="url.base64String" class="image-proudct"><button type="button" class="btn btn-danger" (click)="deleteImage(i)"><i class="bi bi-trash-fill"></i> Xóa</button>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Lưu</button>
+        <button type="button" class="btn btn-secondary ms-2" (click)="onBack()">Quay lại</button>
+    </form>
+</div>

@@ -1,0 +1,53 @@
+<div class="row mt-2">
+    <div class="col-sm-3" *ngIf="newPosts && newPosts.length > 0">
+        <h4 class="text-danger"><i class="bi bi-cloud-plus-fill"></i> TIN TỨC MỚI NHẤT</h4>
+        <div class="col-sm-12 p-3" *ngFor="let item of newPosts">
+            <div class="product">
+                <a routerLink="/home/view-post/{{item.id}}" (click)="onRouter(item.id)"><img [src]="item.image"></a>
+            </div>
+            <div class="text-center text-danger fw-bold">
+                <a routerLink="/home/view-post/{{item.id}}" (click)="onRouter(item.id)" class="text-decoration-none" *ngIf="item.title">{{ item.title | viewPipe : 35}}</a>
+            </div>
+
+            <div class="text-center text-black fw-bold">
+                {{ item.lastUpdate | date:'dd-MM-yyyy' }}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-9 border-start border-danger" *ngIf="news">
+        <h3>{{ news.title }}</h3>
+        <div class="text-center">
+            <img [src]="news.image" class="img-new-detail">
+        </div>
+        <div style="white-space: pre-wrap">
+            {{ news.content }}
+        </div>
+        <p>Ngày đăng: {{ news.lastUpdate | date:'dd-MM-yyyy' }} - nguồn: {{ news.rootLink }}</p>
+    </div>
+</div>
+
+<h2 class="text-success">
+    <i class="bi bi-file-earmark-break-fill"></i> BÀI VIẾT LIÊN QUAN
+</h2>
+
+<div class="alert alert-warning" role="alert" *ngIf="relatedPosts && relatedPosts.length === 0">
+    Không tìm thấy bài viết liên quan nào
+</div>
+
+<div class="row" *ngIf="relatedPosts && relatedPosts.length > 0">
+    <div class="row justify-content-center" *ngIf="relatedPosts && relatedPosts.length > 0">
+        <div class="col-sm-3 p-3" *ngFor="let item of relatedPosts">
+            <div class="product">
+                <a routerLink="/home/view-post/{{item.id}}" (click)="onRouter(item.id)"><img [src]="item.image"></a>
+            </div>
+            <div class="text-center text-danger fw-bold">
+                <a routerLink="/home/view-post/{{item.id}}" (click)="onRouter(item.id)" class="text-decoration-none" *ngIf="item.title">{{ item.title | viewPipe : 35}}</a>
+            </div>
+
+            <div class="text-center text-black fw-bold">
+                {{ item.lastUpdate | date:'dd-MM-yyyy' }}
+            </div>
+        </div>
+    </div>
+</div>

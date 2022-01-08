@@ -1,0 +1,52 @@
+<div class="row justify-content-center mt-2 mb-2 content-form">
+    <div class="col-sm-8">
+        <h3 class="text-center text-success">GỬI LIÊN HỆ</h3>
+
+        <form class="row g-3" (ngSubmit)="onSubmit()" [formGroup]="myForm">
+            <div class="col-sm-12">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" placeholder="Nhập email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && emailUser?.errors}">
+
+                <div *ngIf="submitted && emailUser?.invalid" class="invalid-feedback">
+                    <div *ngIf="emailUser?.errors?.['required']">Bạn chưa nhập email</div>
+                    <div *ngIf="emailUser?.errors?.['email']">Email không đúng định dạng</div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <label for="fullName" class="form-label">Họ tên</label>
+                <input type="text" class="form-control" placeholder="Nhập họ tên" formControlName="fullName" [ngClass]="{ 'is-invalid': submitted && fullName?.errors}">
+
+                <div *ngIf="submitted && fullName?.invalid" class="invalid-feedback">
+                    <div *ngIf="fullName?.errors?.['required']">Bạn chưa nhập họ tên</div>
+                    <div *ngIf="fullName?.errors?.['minlength']">Họ tên phải nhỏ hơn 50 ký tự</div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <label for="phone" class="form-label">Số điện thoại</label>
+                <input type="text" class="form-control" placeholder="Nhập số điện thoại" formControlName="phone" [ngClass]="{ 'is-invalid': submitted && phone?.errors}">
+
+                <div *ngIf="submitted && phone?.invalid" class="invalid-feedback">
+                    <div *ngIf="phone?.errors?.['required']">Bạn chưa nhập số điện thoại</div>
+                    <div *ngIf="phone?.errors?.['pattern']">Số điện thoại không đúng định dạng</div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="content" class="form-label">Nội dung</label>
+                <textarea class="form-control" placeholder="Nhập nội dung liên hệ" formControlName="content" [ngClass]="{ 'is-invalid': submitted && content?.errors}"></textarea>
+
+                <div *ngIf="submitted && content?.invalid" class="invalid-feedback">
+                    <div *ngIf="content?.errors?.['required']">Bạn chưa nhập nội dung đánh giá</div>
+                    <div *ngIf="content?.errors?.['maxlength']">Nội dung đánh giá phải nhỏ hơn 4000 ký tự</div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Gửi</button>
+                <button type="button" class="btn btn-secondary ms-2" (click)="onBack()">Quay lại</button>
+            </div>
+        </form>
+    </div>
+</div>

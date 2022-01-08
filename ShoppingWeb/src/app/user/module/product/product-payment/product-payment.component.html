@@ -1,0 +1,108 @@
+<div class="row mt-2" *ngIf="cartTotalDTO">
+    <div class="alert alert-warning" role="alert" *ngIf="cartTotalDTO.cartDTOs && cartTotalDTO.cartDTOs.length === 0">
+        Không có sản phẩm nào trong giỏ hàng
+    </div>
+    <div class="col-sm-8" *ngIf="cartTotalDTO.cartDTOs && cartTotalDTO.cartDTOs.length > 0">
+
+        <h3 class="text-center">THÔNG TIN MẶT HÀNG THANH TOÁN</h3>
+
+        <div class="col-sm-12 table-responsive lb-table lb-scroll">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Sản phẩm</th>
+                        <th scope="col">Size</th>
+                        <th scope="col">Màu sắc</th>
+                        <th scope="col">Giá sản phẩm</th>
+                        <th scope="col">Khuyến mại</th>
+                        <th scope="col">Giá khuyến mại</th>
+                        <th scope="col">Số lượng sản phẩm</th>
+                        <th scope="col">Tổng cộng</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="cartTotalDTO.cartDTOs && cartTotalDTO.cartDTOs.length > 0">
+                    <tr *ngFor="let cartDTO of cartTotalDTO?.cartDTOs">
+                        <td *ngIf="cartDTO.cart?.product?.productName">{{ cartDTO.cart?.product?.productName || '' | paymentPipe : 35}}</td>
+                        <td>
+                            {{ cartDTO.cart?.productModel?.productModelName }}
+                        </td>
+                        <td>
+                            {{ cartDTO.cart?.productType?.productTypeName }}
+                        </td>
+                        <td [ngClass]="cartDTO.sale && cartDTO.sale > 0 ? 'text-decoration-line-through text-secondary' : 'text-black fw-bold'">{{ cartDTO.price | currency: 'VND':''}}đ</td>
+                        <td>{{ cartDTO.sale }}%</td>
+                        <td [ngClass]="cartDTO.sale && cartDTO.sale > 0 ? 'text-black fw-bold' : ''">{{ cartDTO.priceSale | currency: 'VND':''}}đ</td>
+                        <td>
+                            {{ cartDTO.quantity }}
+                        </td>
+                        <td class="text-black fw-bold">{{ cartDTO.total | currency: 'VND':''}}đ</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-sm-4" *ngIf="cartTotalDTO.cartDTOs && cartTotalDTO.cartDTOs.length > 0">
+        <div class="card">
+            <div class="card-header text-center fw-bold">
+                THÔNG TIN HÓA ĐƠN
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Mục</th>
+                            <th scope="col">Chi tiết</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold text-black">Tên đơn hàng</td>
+                            <td *ngIf="userSystem">{{ userSystem.fullName | uppercase }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-black"><i class="bi bi-cart-check-fill"></i> Tổng số lượng</td>
+                            <td class="text-black fw-bold">{{ cartTotalDTO.totalQuantity }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-black"><i class="bi bi-currency-exchange"></i> Tổng tiền sản phẩm</td>
+                            <td class="text-black fw-bold">{{ cartTotalDTO.total | currency: 'VND':''}}đ</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-primary"><i class="bi bi-geo-alt-fill"></i> Chuyển đến <a routerLink="/home/update-profile" class="link-danger text-decoration-none"><i class="bi bi-pencil-square"></i> Sửa</a></td>
+                            <td class="fw-bold text-primary text-wrap" *ngIf="userSystem"> {{ userSystem.specificAddress }} - Xã/Phường: {{ userSystem.wards }} - Quận/Huyện: {{ userSystem.district }} - Tỉnh/Thành phố: {{ userSystem.province }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-primary"><i class="bi bi-truck"></i> Phí vận chuyển</td>
+                            <td class="fw-bold text-primary" *ngIf="shippingFee">{{ shippingFee.shippingFee | currency: 'VND':''}}đ</td>
+                        </tr>
+                        <tr>
+                            <td class="text-success fw-bold"><i class="bi bi-tag-fill"></i> Mã giảm giá</td>
+                            <td *ngIf="clicked">
+                                <button type="button" class="btn btn-outline-success" (click)="onDiscount()">Chọn mã giảm giá</button>
+                            </td>
+                            <td *ngIf="checkDiscount" class="fst-italic text-warning">
+                                Không có mã giảm giá
+                            </td>
+                            <td *ngIf="discountCode">
+                                <span class="fst-italic">{{ discountCode.discountCode }} </span> giảm {{ discountCode.discount | currency: 'VND':''}}đ
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="text-danger fw-bold">Tổng tiền thanh toán</td>
+                            <td *ngIf="discountTotal === 0" class="text-danger fw-bold">{{ productTotal + shippingTotal | currency: 'VND':''}}đ</td>
+                            <td *ngIf="discountTotal > 0" class="text-danger fw-bold">{{ (productTotal + shippingTotal) - discountTotal | currency: 'VND':''}}đ</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+            <div class="card-footer text-muted">
+                <div class="d-grid gap-2">
+                    <button class="btn btn-danger" type="button" (click)="onPayment()"><i class="bi bi-credit-card-2-back-fill"></i> Đặt hàng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

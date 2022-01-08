@@ -1,0 +1,131 @@
+<div class="row mt-2" *ngIf="productDetailDTO">
+    <h3 class="text-success">SẢN PHẨM</h3>
+    <div class="col-sm-5 product-order">
+        <div id="carouselExampleControlsNoTouching" class="carousel slide" data-bs-touch="false" data-bs-interval="false">
+            <div class="carousel-inner">
+                <div [ngClass]="i===0 ? 'carousel-item active' : 'carousel-item'" *ngFor="let url of productImages; let i = index">
+                    <img [src]="url.image" class="d-block w-100">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="col-sm-7">
+        <div class="card border-info text-dark bg-light mb-1">
+            <div class="card-header fw-bold text-primary">{{ productDetailDTO.productName }}</div>
+            <div class="card-body">
+                <p class="fw-bold text-danger" *ngIf="productDetailDTO.sale && productDetailDTO.sale > 0">Giảm giá : {{ productDetailDTO.sale }}%</p>
+                <p class="card-text" style="white-space: pre-wrap">{{ productDetailDTO.introduce }}</p>
+            </div>
+        </div>
+        <div class="bg-light text-center">
+            <span [ngClass]="productDetailDTO.sale && productDetailDTO.sale > 0 ? 'text-decoration-line-through text-secondary fs-4' : 'text-danger fs-2 fw-bold'">{{ productDetailDTO.priceSell | currency: 'VND':'' }}đ</span> &nbsp;
+            <span class="text-danger fw-bold fs-2" *ngIf="productDetailDTO.sale && productDetailDTO.sale > 0 && productDetailDTO.priceSell">{{ productDetailDTO.priceSell - (productDetailDTO.priceSell * (productDetailDTO.sale / 100)) | currency: 'VND':''}}đ</span>
+        </div>
+        <div class="row mt-1">
+            <div class="text-secondary col-sm-2">Size</div>
+            <div class="col-sm-10">
+                <button type="button" [ngClass]="productModel.id === productModelChoose?.id ? 'btn btn-danger ms-2' : 'btn btn-outline-secondary ms-2'" *ngFor="let productModel of productDetailDTO.productModels" (click)="onProductModel(productModel)">{{ productModel.productModelName }}</button>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="text-secondary col-sm-2">Màu sắc</div>
+            <div class="col-sm-10">
+                <button type="button" [ngClass]="productType.id === productTypeChoose?.id ? 'btn btn-danger ms-2' : 'btn btn-outline-secondary ms-2'" *ngFor="let productType of productDetailDTO.productTypes" (click)="onProductType(productType)">{{ productType.productTypeName }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<form (ngSubmit)="onSubmit()" [formGroup]="myForm" class="row mt-1 justify-content-end">
+    <div class="mb-3" [hidden]="true">
+        <input type="text" class="form-control" formControlName="id">
+    </div>
+
+    <div class="text-secondary col-sm-1 fw-bold">
+        Số lượng
+    </div>
+    <div class="col-sm-2 ms-3">
+        <div class="input-group">
+            <button class="btn btn-outline-secondary" type="button" (click)="onMinus()"><i class="bi bi-dash"></i></button>
+            <input type="number" class="form-control text-center" formControlName="quantity" [ngClass]="{ 'is-invalid': submitted && quantity?.errors}" (change)="onChange()">
+            <button class="btn btn-outline-secondary" type="button" (click)="onPlus()"><i class="bi bi-plus"></i></button>
+        </div>
+        <div *ngIf="submitted && quantity?.invalid" class="invalid-feedback d-block">
+            <div *ngIf="quantity?.errors?.['required']">Bạn chưa nhập số lượng</div>
+            <div *ngIf="quantity?.errors?.['min']">Số lượng phải phải ít nhất là 1</div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <button type="submit" class="btn btn-danger ms-3"><i class="bi bi-cart-plus"></i> Thêm vào giỏ hàng</button>
+    </div>
+</form>
+<div class="row mt-2" *ngIf="productDetailDTO">
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Mô tả</button>
+            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Đánh giá</button>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="white-space: pre-wrap">{{ productDetailDTO.description }}</div>
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <div class="alert alert-warning mt-2" role="alert" *ngIf="productReviews && productReviews.length === 0">
+                Không có đánh giá sản phẩm
+            </div>
+            <div class="col-sm-12 mt-2 bg-light" *ngIf="productReviews && productReviews.length > 0">
+                <div *ngFor="let productReview of productReviews">
+                    <p class="text-primary">
+                        <span class="fs-2"><i class="bi bi-person-circle"></i></span> {{ productReview.userSystem?.fullName }}
+                    </p>
+                    <p style="white-space: pre-wrap">
+                        {{ productReview.content }}
+                    </p>
+                    <p class="text-danger fst-italic">
+                        {{ productReview.lastUpdate | date:'dd-MM-yyyy' }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row border-danger border-top mt-2" *ngIf="productDetailDTO">
+    <h3 class="text-danger p-2">SẢN PHẨM TƯƠNG TỰ</h3>
+</div>
+
+<div class="alert alert-warning" role="alert" *ngIf="productDTOs && productDTOs.length === 0">
+    Không tìm thấy sản phẩm tương tự nào
+</div>
+
+<div class="row justify-content-center" *ngIf="productDTOs && productDTOs.length > 0">
+    <div class="col-sm-3 p-3" *ngFor="let product of productDTOs">
+        <div [ngClass]="product.sale && product.sale ? 'box' : 'product'">
+            <div class="ribbon ribbon-top-right" *ngIf="product.sale && product.sale > 0">
+                <span class="text-danger fw-bold">GIẢM {{ product.sale }}%</span>
+            </div>
+            <a routerLink="/home/product-order/{{product.id}}" (click)="onClickLink(product.id)"><img [src]="product.image"></a>
+        </div>
+        <div class="text-center text-danger fw-bold">
+            {{ product.category?.categoryName}}
+        </div>
+        <div class="text-center">
+            <a routerLink="/home/product-order/{{product.id}}" class="link-info text-decoration-none" *ngIf="product.productName" (click)="onClickLink(product.id)">{{ product.productName | orderPipe : 35}}</a>
+        </div>
+        <div class="text-center">
+            <span [ngClass]="product.sale && product.sale > 0 ? 'text-decoration-line-through text-secondary' : 'text-black fw-bold'">
+                {{ product.priceSell | currency: 'VND':''}}đ
+            </span> &nbsp;
+            <span class="fw-bold text-black" *ngIf="product.priceSell && product.sale && product.sale > 0">
+                {{ product.priceSell - (product.priceSell * (product.sale / 100)) | currency: 'VND':''}}đ
+            </span>
+        </div>
+    </div>
+</div>

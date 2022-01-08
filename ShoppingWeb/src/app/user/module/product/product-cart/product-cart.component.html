@@ -1,0 +1,87 @@
+<div class="row mt-2" *ngIf="cartTotalDTO">
+    <div class="alert alert-warning" role="alert" *ngIf="cartTotalDTO.cartDTOs && cartTotalDTO.cartDTOs.length === 0">
+        Không có sản phẩm nào trong giỏ hàng
+    </div>
+    <div class="col-sm-8 table-responsive lb-table lb-scroll" *ngIf="cartTotalDTO.cartDTOs && cartTotalDTO.cartDTOs.length > 0">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Sản phẩm</th>
+                    <th scope="col">Size</th>
+                    <th scope="col">Màu sắc</th>
+                    <th scope="col">Giá sản phẩm</th>
+                    <th scope="col">Khuyến mại</th>
+                    <th scope="col">Giá khuyến mại</th>
+                    <th scope="col">Số lượng sản phẩm</th>
+                    <th scope="col">Tổng cộng</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody *ngIf="cartTotalDTO.cartDTOs && cartTotalDTO.cartDTOs.length > 0">
+                <tr *ngFor="let cartDTO of cartTotalDTO?.cartDTOs">
+                    <td *ngIf="cartDTO.cart?.product?.productName">{{ cartDTO.cart?.product?.productName || '' | cartPipe : 35}}</td>
+                    <td *ngIf="cartDTO.cart?.product?.productModels">
+                        <button type="button" [ngClass]="productModel.id === cartDTO.cart?.productModel?.id ? 'btn btn-danger ms-2' : 'btn btn-outline-secondary ms-2'" *ngFor="let productModel of cartDTO.cart?.product?.productModels" (click)="onProductModel(cartDTO.cart?.id, productModel)">{{ productModel.productModelName }}</button>
+                    </td>
+                    <td>
+                        <button type="button" [ngClass]="productType.id === cartDTO.cart?.productType?.id? 'btn btn-danger ms-2' : 'btn btn-outline-secondary ms-2'" *ngFor="let productType of cartDTO.cart?.product?.productTypes" (click)="onProductType(cartDTO.cart?.id, productType)">{{ productType.productTypeName }}</button>
+                    </td>
+                    <td [ngClass]="cartDTO.sale && cartDTO.sale > 0 ? 'text-decoration-line-through text-secondary' : 'text-black fw-bold'">{{ cartDTO.price | currency: 'VND':''}}đ</td>
+                    <td>{{ cartDTO.sale }}%</td>
+                    <td [ngClass]="cartDTO.sale && cartDTO.sale > 0 ? 'text-black fw-bold' : ''">{{ cartDTO.priceSale | currency: 'VND':''}}đ</td>
+                    <td class="col-2">
+                        <div class="input-group">
+                            <button class="btn btn-outline-secondary" type="button" (click)="onMinus(cartDTO.cart?.id, quantity.value)"><i class="bi bi-dash"></i></button>
+                            <input type="number" class="form-control text-center" [value]="cartDTO.quantity" (change)="onChangeValue(cartDTO.cart?.id, $event)" name="quantity" #quantity>
+                            <button class="btn btn-outline-secondary" type="button" (click)="onPlus(cartDTO.cart?.id, quantity.value)"><i class="bi bi-plus"></i></button>
+                        </div>
+                    </td>
+                    <td class="text-black fw-bold">{{ cartDTO.total | currency: 'VND':''}}đ</td>
+                    <td>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="onDelete(cartDTO.cart?.id)"><i class="bi bi-x-circle"></i> Xóa</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-sm-4" *ngIf="cartTotalDTO.cartDTOs && cartTotalDTO.cartDTOs.length > 0">
+        <div class="card">
+            <div class="card-header text-primary fw-bold">
+                TỔNG SỐ LƯỢNG TRONG GIỎ HÀNG
+            </div>
+            <div class="card-body">
+                <div class="border-primary border-bottom p-3">
+                    <span class="text-black fw-bold">Tổng số lượng sản phẩm: </span> <span class="text-danger fw-bold">{{ cartTotalDTO.totalQuantity }}</span>
+                </div>
+
+                <div class="p-3">
+                    <span class="text-black fw-bold">Tổng tiền: </span> <span class="text-danger fw-bold">{{ cartTotalDTO.total | currency: 'VND':''}}đ</span>
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                <div class="d-grid gap-2">
+                    <button class="btn btn-danger" type="button" routerLink="/home/product-payment"><i class="bi bi-credit-card-2-back-fill"></i> Mua hàng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Xóa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn muốn xóa mặt hàng này không ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" (click)="confirmDelete()" data-bs-dismiss="modal">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

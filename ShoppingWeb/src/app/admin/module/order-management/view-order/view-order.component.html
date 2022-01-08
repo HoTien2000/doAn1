@@ -1,0 +1,90 @@
+<div class="row justify-content-center mt-2">
+    <div class="col-sm-12">
+        <h2 class="text-center text-success">CHI TIẾT ĐƠN HÀNG</h2>
+        <div *ngIf="payment">
+            <table>
+                <tr>
+                    <td>Tên đơn</td>
+                    <td>{{ payment.userSystem?.fullName }}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{{ payment.userSystem?.email }}</td>
+                </tr>
+                <tr>
+                    <td>Số điện thoại</td>
+                    <td>{{ payment.userSystem?.phone }}</td>
+                </tr>
+                <tr>
+                    <td>Tổng số lượng</td>
+                    <td>{{ payment.totalQuantity }}</td>
+                </tr>
+                <tr>
+                    <td>Địa chỉ nhận</td>
+                    <td>{{ payment.shipingAddress }}</td>
+                </tr>
+                <tr>
+                    <td>Phí vận chuyển</td>
+                    <td>{{ payment.shippingFee | currency: 'VND':''}}đ</td>
+                </tr>
+                <tr>
+                    <td>Mã giảm giá</td>
+                    <td>{{ payment.discountCode }}</td>
+                </tr>
+                <tr>
+                    <td>Giảm giá</td>
+                    <td>{{ payment.totalDiscount | currency: 'VND':''}}đ</td>
+                </tr>
+                <tr>
+                    <td>Ngày đặt hàng</td>
+                    <td>{{ payment.lastUpdate | date:'dd-MM-yyyy' }}</td>
+                </tr>
+                <tr>
+                    <td>Tổng thanh toán</td>
+                    <td class="fw-bold text-primary">{{ payment.total | currency: 'VND':''}}đ</td>
+                </tr>
+                <tr>
+                    <td>Trạng thái</td>
+                    <td *ngIf="payment.status === 0" class="text-danger">Chờ xác nhận</td>
+                    <td *ngIf="payment.status === 1" class="text-primary">Xác nhận thành công</td>
+                    <td *ngIf="payment.status === 2" class="text-warning">Đang vận chuyển</td>
+                    <td *ngIf="payment.status === 3" class="text-success">Giao hàng thành công</td>
+                </tr>
+            </table>
+        </div>
+        <div class="table-responsive lb-table lb-scroll" *ngIf="productPayments && productPayments.length > 0">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Danh mục</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Size</th>
+                        <th>Màu</th>
+                        <th>Số lượng</th>
+                        <th>Giá</th>
+                        <th>Giảm</th>
+                        <th>Giá đã giảm</th>
+                        <th>Thành tiền</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let productPayment of productPayments">
+                        <td>{{ productPayment.catecoryName }}</td>
+                        <td>{{ productPayment.productName }}</td>
+                        <td>{{ productPayment.model }}</td>
+                        <td>{{ productPayment.type }}</td>
+                        <td>{{ productPayment.quantity }}</td>
+                        <td>{{ productPayment.price | currency: 'VND':''}}đ</td>
+                        <td>{{ productPayment.sale }}%</td>
+                        <td>{{ productPayment.priceSale | currency: 'VND':''}}đ</td>
+                        <td>{{ productPayment.total | currency: 'VND':''}}đ</td>
+                        <td>
+                            <button type="button" class="btn btn-success ms-2" routerLink="/home-admin/view-product/{{ productPayment.productId }}">Xem</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

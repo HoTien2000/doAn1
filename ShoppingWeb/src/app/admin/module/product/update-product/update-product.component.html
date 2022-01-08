@@ -1,0 +1,117 @@
+<div class="row justify-content-center mt-2 mb-2 content-form">
+    <div class="col-8">
+        <h3 class="text-center text-success">THÊM SẢN PHẨM</h3>
+
+        <form (ngSubmit)="onSubmit()" [formGroup]="myForm">
+            <div class="mb-3" [hidden]="true">
+                <input type="text" class="form-control" formControlName="id" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="productName" class="form-label">Tên sản phẩm</label>
+                <input type="text" class="form-control" placeholder="Nhập tên sản phẩm" formControlName="productName" [ngClass]="{ 'is-invalid': submitted && productName?.errors}">
+
+                <div *ngIf="submitted && productName?.invalid" class="invalid-feedback">
+                    <div *ngIf="productName?.errors?.['required']">Bạn chưa nhập tên sản phẩm</div>
+                    <div *ngIf="productName?.errors?.['maxlength']">Tên sản phẩm phải nhỏ hơn 255 ký tự</div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="introduce" class="form-label">Lời giới thiệu</label>
+                <textarea class="form-control" placeholder="Nhập nội dung lời giới thiệu" formControlName="introduce" [ngClass]="{ 'is-invalid': submitted && introduce?.errors}"></textarea>
+
+                <div *ngIf="submitted && introduce?.invalid" class="invalid-feedback">
+                    <div *ngIf="introduce?.errors?.['required']">Bạn chưa nhập nội dung lời giới thiệu</div>
+                    <div *ngIf="introduce?.errors?.['maxlength']">Nội dung lời giới thiệu phải nhỏ hơn 500 ký tự</div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Mô tả sản phẩm</label>
+                <textarea class="form-control" placeholder="Nhập nội dung mô tả sản phẩm" formControlName="description" [ngClass]="{ 'is-invalid': submitted && description?.errors}"></textarea>
+
+                <div *ngIf="submitted && description?.invalid" class="invalid-feedback">
+                    <div *ngIf="description?.errors?.['required']">Bạn chưa nhập nội dung mô tả sản phẩm</div>
+                    <div *ngIf="description?.errors?.['maxlength']">Nội dung mô tả sản phẩm phải nhỏ hơn 5000 ký tự</div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="priceImport" class="form-label">Giá nhập</label>
+                <input type="number" class="form-control" placeholder="Nhập giá nhập sản phẩm" formControlName="priceImport" [ngClass]="{ 'is-invalid': submitted && priceImport?.errors}">
+
+                <div *ngIf="submitted && priceImport?.invalid" class="invalid-feedback">
+                    <div *ngIf="priceImport?.errors?.['required']">Bạn chưa nhập giá nhập sản phẩm</div>
+                    <div *ngIf="priceImport?.errors?.['pattern']">Giá bán phải từ 0 trở lên</div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="priceSell" class="form-label">Giá bán</label>
+                <input type="number" class="form-control" placeholder="Nhập giá bán sản phẩm" formControlName="priceSell" [ngClass]="{ 'is-invalid': submitted && priceSell?.errors}">
+
+                <div *ngIf="submitted && priceSell?.invalid" class="invalid-feedback">
+                    <div *ngIf="priceSell?.errors?.['required']">Bạn chưa nhập giá bán sản phẩm</div>
+                    <div *ngIf="priceSell?.errors?.['pattern']">Giá bán phải từ 0 trở lên</div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="quantityImport" class="form-label">Số lượng nhập</label>
+                <input type="number" class="form-control" placeholder="Nhập giá số lượng nhập sản phẩm" formControlName="quantityImport" [ngClass]="{ 'is-invalid': submitted && quantityImport?.errors}">
+
+                <div *ngIf="submitted && quantityImport?.invalid" class="invalid-feedback">
+                    <div *ngIf="quantityImport?.errors?.['required']">Bạn chưa nhập số lượng nhập sản phẩm</div>
+                    <div *ngIf="quantityImport?.errors?.['min']">Số lượng nhập phải là số từ 1 đến 1000000000</div>
+                    <div *ngIf="quantityImport?.errors?.['max']">Số lượng nhập phải là số từ 1 đến 1000000000</div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="sale" class="form-label">Khuyến mại (%)</label>
+                <input type="number" class="form-control" placeholder="Nhập phần trăm khuyến mại" formControlName="sale" [ngClass]="{ 'is-invalid': submitted && sale?.errors}">
+
+                <div *ngIf="submitted && sale?.invalid" class="invalid-feedback">
+                    <div *ngIf="sale?.errors?.['required']">Bạn chưa nhập phần trăm khuyến mại</div>
+                    <div *ngIf="sale?.errors?.['min']">Phần trăm khuyến mại là số phải từ 0 đến 100</div>
+                    <div *ngIf="sale?.errors?.['max']">Phần trăm khuyến mại là số phải từ 0 đến 100</div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="productModel" class="form-label">Chọn size</label>
+                <div class="form-check" *ngFor="let itemModel of productModelUpdateDTOs">
+                    <input class="form-check-input" type="checkbox" value="itemModel.productModel?.id" id="itemModel.productModel?.id" (change)="onCheckBoxProductModel(checkbox.checked, itemModel.productModel)" #checkbox [checked]="itemModel.status === 1">
+                    <label class="form-check-label w-100 d-flex" for="itemModel.productModel?.id">
+                        <div class="col">{{ itemModel.productModel?.productModelName }}</div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="productType" class="form-label">Chọn màu</label>
+                <div class="form-check" *ngFor="let itemType of productTypeUpdateDTOs">
+                    <input class="form-check-input" type="checkbox" value="itemType.productType?.id" id="itemType.productType?.id" (change)="onCheckBoxProductType(checkbox.checked, itemType.productType)" #checkbox [checked]="itemType.status === 1">
+                    <label class="form-check-label w-100 d-flex" for="itemType.productType?.id">
+                        <div class="col">{{ itemType.productType?.productTypeName }}</div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="categoryId" class="form-label">Danh mục sản phẩm</label>
+                <select class="form-select form-control" formControlName="categoryId" [ngClass]="{ 'is-invalid': submitted && categoryId?.errors}">
+                    <option *ngFor="let category of categories" [ngValue]="category.id">{{ category.categoryName }}</option>
+                </select>
+
+                <div *ngIf="submitted && categoryId?.invalid" class="invalid-feedback">
+                    <div *ngIf="categoryId?.errors?.['required']">Bạn chưa chọn danh mục sản phẩm</div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Lưu</button>
+            <button type="button" class="btn btn-secondary ms-2" (click)="onBack()">Quay lại</button>
+        </form>
+    </div>
+</div>

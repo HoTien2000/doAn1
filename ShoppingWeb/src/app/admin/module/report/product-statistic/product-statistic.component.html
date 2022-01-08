@@ -1,0 +1,100 @@
+<div class="row justify-content-center mt-2">
+    <div class="col-sm-12" *ngIf="productStatistic">
+        <h2 class="text-center text-success">THỐNG KÊ SẢN PHẨM</h2>
+
+        <form class="row gy-2 gx-3 align-items-center justify-content-end" (ngSubmit)="onReport()">
+
+            <div class="col-auto">
+                <div class="input-group">
+                    <div class="input-group-text">Tên sản phẩm</div>
+                    <input type="text" class="form-control" [(ngModel)]="productName" name="productName" placeholder="Nhập tên sản phẩm">
+                </div>
+            </div>
+
+            <div class="col-auto" *ngIf="categories && categories.length > 0">
+                <div class="input-group">
+                    <div class="input-group-text">Danh mục</div>
+                    <select class="form-select" [(ngModel)]="categoryId" name="categoryId">
+                        <option value="">Chọn danh mục</option>
+                        <option *ngFor="let category of categories" [ngValue]="category.id">{{ category.categoryName }}</option>
+                      </select>
+                </div>
+            </div>
+
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            </div>
+        </form>
+
+        <div class="mt-2 d-flex text-center text-white fw-bold">
+            <div class="col-sm-3 bg-secondary p-3">
+                Sản phẩm: {{ productStatistic.quantityProduct }}
+            </div>
+
+            <div class="col-sm-3 bg-warning p-3">
+                Nhập: {{ productStatistic.quantityImport }}
+            </div>
+
+            <div class="col-sm-3 bg-primary p-3">
+                Bán: {{ productStatistic.quantitySell }}
+            </div>
+
+            <div class="col-sm-3 bg-success p-3">
+                Kho: {{ productStatistic.inventory }}
+            </div>
+        </div>
+
+        <div class="alert alert-warning mt-2" role="alert" *ngIf="productStatistic.products && productStatistic.products.length === 0">
+            Không có dữ liệu sản phẩm
+        </div>
+
+        <div class="table-responsive lb-table lb-scroll mt-2" *ngIf="productStatistic.products && productStatistic.products.length > 0">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Tên sản phẩm</th>
+                        <th>Giá nhập</th>
+                        <th>Giá bán</th>
+                        <th>Số lượng nhập</th>
+                        <th>Số lượng đã bán</th>
+                        <th>Số lượng hiện có</th>
+                        <th>Khuyến mại</th>
+                        <th>Size</th>
+                        <th>Màu sắc</th>
+                        <th>Danh mục</th>
+                        <th>Ngày cập nhật</th>
+                        <th>Người tạo</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let product of productStatistic.products">
+                        <td>{{ product.productName }}</td>
+                        <td>{{ product.priceImport | currency: 'VND':''}} đ</td>
+                        <td>{{ product.priceSell | currency: 'VND':'' }} đ</td>
+                        <td>{{ product.quantityImport }}</td>
+                        <td>{{ product.quantitySell }}</td>
+                        <td>{{ product.inventory }}</td>
+                        <td>{{ product.sale }} %</td>
+                        <td>
+                            <div *ngFor="let productModel of product.productModels">
+                                {{ productModel.productModelName }}
+                            </div>
+                        </td>
+                        <td>
+                            <div *ngFor="let productType of product.productTypes">
+                                {{ productType.productTypeName }}
+                            </div>
+                        </td>
+                        <td>{{ product.category?.categoryName }}</td>
+                        <td>{{ product.lastUpdate | date:'dd-MM-yyyy' }}</td>
+                        <td>{{ product.userSystem?.fullName }}</td>
+                        <td>
+                            <button type="button" class="btn btn-success ms-2" routerLink="/home-admin/view-product/{{ product.id }}">Xem</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

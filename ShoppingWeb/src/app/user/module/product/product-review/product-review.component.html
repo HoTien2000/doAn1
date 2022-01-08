@@ -1,0 +1,20 @@
+<div class="row justify-content-center mt-2 mb-2">
+    <div class="col-8">
+        <h3 class="text-center text-success">ĐÁNH GIÁ SẢN PHẨM</h3>
+
+        <form (ngSubmit)="onSubmit()" [formGroup]="myForm">
+            <div class="mb-3">
+                <label for="content" class="form-label">Nội dung</label>
+                <textarea class="form-control" placeholder="Nhập nội dung đánh giá" formControlName="content" [ngClass]="{ 'is-invalid': submitted && content?.errors}"></textarea>
+
+                <div *ngIf="submitted && content?.invalid" class="invalid-feedback">
+                    <div *ngIf="content?.errors?.['required']">Bạn chưa nhập nội dung đánh giá</div>
+                    <div *ngIf="content?.errors?.['maxlength']">Nội dung đánh giá phải nhỏ hơn 4000 ký tự</div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Đánh giá</button>
+            <button type="button" class="btn btn-secondary ms-2" (click)="onBack()">Quay lại</button>
+        </form>
+    </div>
+</div>
